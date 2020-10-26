@@ -1,7 +1,33 @@
 load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
 
 kt_jvm_library(
-    name = "bazelrecacher",
+    name = "main",
     srcs = ["Main.kt"],
-    deps = [],
+    deps = [
+        ":spawn_java_proto",
+        "@maven//:info_picocli_picocli",
+    ],
+)
+
+java_binary(
+    name = "bazelrecacher",
+    main_class = "com.github.theimplementer.bazelrecacher.MainKt",
+    runtime_deps = [":main"]
+)
+
+java_proto_library(
+    name = "spawn_java_proto",
+    deps = [":spawn_proto"],
+)
+
+proto_library(
+    name = "spawn_proto",
+    srcs = [":spawn_proto_gen"],
+)
+
+genrule(
+    name = "spawn_proto_gen",
+    srcs = ["@bazel_tools//src/main/protobuf:spawn.proto"],
+    outs = ["spawn.proto"],
+    cmd = "cp $< $@",
 )

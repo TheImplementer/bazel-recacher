@@ -45,6 +45,7 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     name = "maven",
     artifacts = [
+        "info.picocli:picocli:4.5.2",
         "junit:junit:4.12",
     ],
     repositories = [
